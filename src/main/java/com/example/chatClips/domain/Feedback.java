@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Feedback {
@@ -29,7 +31,7 @@ public class Feedback {
 
     private String text;
 
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

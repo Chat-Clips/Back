@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Table(name = "Users") //h2 DB 예약어 문제 (임의 설정)

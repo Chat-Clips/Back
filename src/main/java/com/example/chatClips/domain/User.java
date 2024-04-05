@@ -37,4 +37,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Feedback> feedback = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 }

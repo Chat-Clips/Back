@@ -5,9 +5,12 @@ import com.example.chatClips.apiPayload.exception.handler.UserHandler;
 import com.example.chatClips.domain.Feedback;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.dto.FeedbackRequest;
+import com.example.chatClips.dto.FeedbackUpdateRequest;
 import com.example.chatClips.repository.FeedbackRepository;
 import com.example.chatClips.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +32,25 @@ public class FeedbackService {
             .createdAt(LocalDateTime.now())
             .build();
         return feedbackRepository.save(feedback);
+    }
+
+    public void FeedbackUpdate(FeedbackUpdateRequest.PostDTO request){
+        Feedback feedback = feedbackRepository.findById(request.getId())
+                .orElseThrow(() -> new IllegalArgumentException("ID에 해당하는 피드백을 찾을 수 없습니다: "));
+
+        // 피드백 내용을 업데이트합니다.
+        feedback.setTitle(request.getTitle());
+        feedback.setText(request.getText());
+
+        // 업데이트된 피드백을 저장합니다.
+        feedbackRepository.save(feedback);
+    }
+
+    public void deletePost(Long Id) {
+        feedbackRepository.deleteById(Id);
+    }
+
+    public List<Feedback> getAllPosts() {    //게시글 목록 조회
+       return feedbackRepository.findAll();
     }
 }

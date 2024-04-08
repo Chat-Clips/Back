@@ -41,7 +41,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/all")
-    public List<Feedback> getAllPosts() {
-        return feedbackService.getAllPosts();
+    public ApiResponse<FeedbackResponse.GetAllDTO> getAllPosts() {
+        return ApiResponse.onSuccess(FeedbackConverter.toGetAll(feedbackService.getAllPosts()));
     }
 }

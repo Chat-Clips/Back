@@ -16,4 +16,15 @@ public class FeedbackRequest {
         private String text;
         private Long userId;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateDTO {
+        private Long id;
+        private String title;
+        private String text;
+
+    }
 }

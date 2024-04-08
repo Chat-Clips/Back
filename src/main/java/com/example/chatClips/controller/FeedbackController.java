@@ -25,9 +25,8 @@ public class FeedbackController {
     }
 
     @PostMapping("/update")
-    public ApiResponse<String> updateFeedback(@Valid @RequestBody FeedbackUpdateRequest.PostDTO request) {
-        feedbackService.FeedbackUpdate(request);
-        return ApiResponse.onSuccess("피드백 업데이트가 성공적으로 수행되었습니다.");
+    public ApiResponse<FeedbackResponse.UpdateDTO> updateFeedback(@Valid @RequestBody FeedbackRequest.UpdateDTO request) {
+        return ApiResponse.onSuccess(FeedbackConverter.toUpdateDTO(feedbackService.update(request)));
     }
 
     @DeleteMapping("/delete/{id}")

@@ -5,6 +5,7 @@ import com.example.chatClips.converter.FeedbackConverter;
 import com.example.chatClips.converter.UserConverter;
 import com.example.chatClips.domain.Feedback;
 import com.example.chatClips.dto.*;
+import com.example.chatClips.dto.FeedbackResponse.DeleteDTO;
 import com.example.chatClips.dto.UserResponseDTO.JoinDTO;
 import com.example.chatClips.service.FeedbackService;
 import jakarta.validation.Valid;
@@ -30,13 +31,8 @@ public class FeedbackController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ApiResponse<String> deleteFeedback(@PathVariable("id") Long id) {
-        try {
-            feedbackService.deletePost(id);
-            return ApiResponse.onSuccess("피드백 삭제가 성공적으로 수행되었습니다.");
-        } catch (Exception e) {
-            return ApiResponse.onFailure("DELETE_FAILED", "피드백 삭제 중 오류가 발생했습니다: " + e.getMessage(), null);
-        }
+    public ApiResponse<DeleteDTO> deleteFeedback(@PathVariable("id") Long id) {
+        return ApiResponse.onSuccess(FeedbackConverter.toDeleteDTO(feedbackService.delete(id)));
     }
 
     @GetMapping("/all")

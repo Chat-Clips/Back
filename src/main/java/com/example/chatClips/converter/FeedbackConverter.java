@@ -20,6 +20,11 @@ public class FeedbackConverter {
             .text(feedback.getText())
             .build();
     }
+    public static FeedbackResponse.DeleteDTO toDeleteDTO(Long id) {
+        return FeedbackResponse.DeleteDTO.builder()
+            .id(id)
+            .build();
+    }
     public static FeedbackResponse.GetAllDTO toGetAll(List<Feedback> feedbackList){
         return FeedbackResponse.GetAllDTO.builder()
             .feedbackList(feedbackList)

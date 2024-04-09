@@ -45,8 +45,10 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
-    public void deletePost(Long Id) {
-        feedbackRepository.deleteById(Id);
+    public Long delete(Long id) {
+        Feedback feedback = feedbackRepository.findById(id).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
+        feedbackRepository.delete(feedback);
+        return feedback.getId();
     }
 
     public List<Feedback> getAllPosts() {    //게시글 목록 조회

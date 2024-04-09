@@ -27,7 +27,7 @@ public class FeedbackService {
 
         Feedback feedback = Feedback.builder()
             .title(request.getTitle())
-            .text(request.getText())
+            .text(request.getText()
             .user(user)
             .createdAt(LocalDateTime.now())
             .build();

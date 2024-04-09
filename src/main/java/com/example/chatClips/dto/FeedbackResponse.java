@@ -23,6 +23,21 @@ public class FeedbackResponse {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class UpdateDTO{
+        private String title;
+        private String text;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteDTO{
+        private Long id;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetAllDTO{
         private List<Feedback> feedbackList;
     }

@@ -19,7 +19,7 @@ public class ChatController {
 
     private final ChatService service;
 
-    @PostMapping
+    @PostMapping("/create")
     public ChatRoom createRoom(@RequestParam String name){
 
         return service.createRoom(name);

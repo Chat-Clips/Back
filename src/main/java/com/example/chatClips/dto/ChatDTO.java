@@ -8,7 +8,7 @@ import lombok.Data;
 public class ChatDTO {
 
     public enum MessageType {
-        ENTER, TALK
+        ENTER, TALK, LEAVE
     }
     private MessageType type;
     private String roomId;

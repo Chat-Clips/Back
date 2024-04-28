@@ -1,38 +1,43 @@
 package com.example.chatClips.domain;
 
+import com.example.chatClips.domain.mapping.UserChatRoom;
 import com.example.chatClips.dto.ChatDTO;
 import com.example.chatClips.service.ChatService;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.socket.WebSocketSession;
 
 @Data
+@Entity
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class ChatRoom {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String roomId;
-    private String name;
-    private Set<WebSocketSession> sessions = new HashSet<>();
+    private String roomName;
+    private Long userCount;
 
-    @Builder
-    public ChatRoom(String roomId, String name){
-        this.roomId = roomId;
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "chatRoom")
+    private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 
-    public void handleAction(WebSocketSession session, ChatDTO message, ChatService service){
-        if(message.getType().equals(ChatDTO.MessageType.ENTER)){
-            sessions.add(session);
-
-            message.setMessage(message.getSender() + "님이 입장하였습니다.");
-            sendMessage(message, service);
-        } else if (message.getType().equals(ChatDTO.MessageType.TALK)){
-            message.setMessage(message.getMessage());
-            sendMessage(message, service);
-        }
-    }
-    public <T> void sendMessage(T message, ChatService service){
-        sessions.parallelStream().forEach(sessions -> service.sendMessage(sessions, message));
-    }
 }

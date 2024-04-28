@@ -1,5 +1,6 @@
 package com.example.chatClips.domain;
 
+import com.example.chatClips.domain.mapping.UserChatRoom;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,4 +43,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 }

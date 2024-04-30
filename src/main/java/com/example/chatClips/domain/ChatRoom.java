@@ -1,52 +1,45 @@
 package com.example.chatClips.domain;
 
 import com.example.chatClips.domain.mapping.UserChatRoom;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
+import com.example.chatClips.dto.ChatDTO;
+import com.example.chatClips.service.ChatService;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.springframework.web.socket.WebSocketSession;
 
+@Data
 @Entity
-@Getter
-@Setter
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users") //h2 DB 예약어 문제 (임의 설정)
-public class User {
+public class ChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String roomId;
+    private String roomName;
+    private Long userCount;
 
-    private String username;
-
-    private String userId;
-
-    private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private List<Feedback> feedback = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "chatRoom")
     private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "chatRoom")
     private List<Chat> chatList = new ArrayList<>();
 }

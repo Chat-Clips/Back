@@ -14,6 +14,7 @@ public class UserRequestDTO {
     public static class JoinDTO {
         private String userId;
         private String username;
+        private String password;
     }
 
 }

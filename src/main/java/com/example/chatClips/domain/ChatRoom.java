@@ -40,4 +40,6 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Chat> chatList = new ArrayList<>();
 }

@@ -31,11 +31,13 @@ public class ChatRoomService {
     public void increaseUser(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         chatRoom.setUserCount(chatRoom.getUserCount() + 1);
+        chatRoomRepository.save(chatRoom);
     }
 
     public void decreaseUser(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         chatRoom.setUserCount(chatRoom.getUserCount() - 1);
+        chatRoomRepository.save(chatRoom);
     }
 
     public String addUser(String roomId, String userName){

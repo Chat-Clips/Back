@@ -1,8 +1,10 @@
 package com.example.chatClips.controller;
 
+import com.example.chatClips.domain.Chat;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.dto.ChatDTO;
+import com.example.chatClips.repository.ChatRepository;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
@@ -29,6 +31,7 @@ public class ChatController {
     private final ChatRoomService chatRoomService;
     private final UserChatRoomRepository userChatRoomRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
     @MessageMapping("/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
@@ -40,13 +43,21 @@ public class ChatController {
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
         User user = userRepository.findByUserId(userId);
         chat.setMessage(user.getUsername() + "님이 입장하셨습니다.");
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
     }
 
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload ChatDTO chat){
         chat.setMessage(chat.getMessage());
-        template.convertAndSend("/sub/chat/room/" + chat.getRoomId(), chat);
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chat.getRoomId());
+        User user = userRepository.findByUserId(chat.getSender());
+        Chat chatting = Chat.builder()
+            .chatRoom(chatRoom)
+            .user(user)
+            .chat(chat.getMessage())
+            .build();
+        chatRepository.save(chatting);
+        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
     }
 
     @EventListener
@@ -71,7 +82,7 @@ public class ChatController {
                 .message(userName + "님이 퇴장하였습니다.")
                 .build();
 
-            template.convertAndSend("/sub/chat/room/" + roomId,chat);
+            template.convertAndSend("/sub/chatroom/" + roomId,chat);
         }
     }
 //

@@ -21,7 +21,10 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "MEMBER4002", "유저가 존재하지 않습니다."),
     MEMBER_NOT_PUBLIC(HttpStatus.BAD_REQUEST, "MEMBER4003", "친구 요청을 보내려는 상대가 비공개 상태입니다."),
     MEMBER_NOT_TOKEN(HttpStatus.BAD_REQUEST, "MEMBER4004", "서버에 저장된 해당 유저의 FirebaseToken이 존재하지 않습니다."),
-    NOT_MATCHING_MEMBER_TOKEN(HttpStatus.BAD_REQUEST, "MEMBER4005", "토큰과 로그인 된 멤버가 일치하지 않습니다.");
+    NOT_MATCHING_MEMBER_TOKEN(HttpStatus.BAD_REQUEST, "MEMBER4005", "토큰과 로그인 된 멤버가 일치하지 않습니다."),
+
+    //피드백 응답
+    FEEDBACK_NOT_FOUND(HttpStatus.BAD_REQUEST, "FEEDBACK4001", "피드백이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

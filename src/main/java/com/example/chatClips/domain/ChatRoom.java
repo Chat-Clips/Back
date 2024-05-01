@@ -1,7 +1,8 @@
 package com.example.chatClips.domain;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.chatClips.domain.mapping.UserChatRoom;
+import com.example.chatClips.dto.ChatDTO;
+import com.example.chatClips.service.ChatService;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,38 +11,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.springframework.web.socket.WebSocketSession;
 
+@Data
 @Entity
-@Getter
-@Setter
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Feedback {
+public class ChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String roomId;
+    private String roomName;
+    private Long userCount;
 
-    private String title;
+    @OneToMany(mappedBy = "chatRoom")
+    private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 
-    private String text;
-
-    private LocalDateTime createdAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
-
-    @OneToMany(mappedBy = "feedback")
-    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "chatRoom")
+    private List<Chat> chatList = new ArrayList<>();
 }

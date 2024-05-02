@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,11 +36,16 @@ public class User {
 
     private String userId;
 
+    private String password;
+
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Feedback> feedback = new ArrayList<>();
+
+
+    public static Hashtable sessionList = new Hashtable();
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
@@ -49,4 +55,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Chat> chatList = new ArrayList<>();
+
 }
+

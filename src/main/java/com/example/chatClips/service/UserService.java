@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,12 +16,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final BCryptPasswordEncoder passwordEncoder;
     public User signup(UserRequestDTO.JoinDTO request){
         User user = User.builder()
             .userId(request.getUserId())
             .username(request.getUsername())
-            .password(request.getPassword())
+            .password(passwordEncoder.encode(request.getPassword()))
             .createdAt(LocalDateTime.now())
             .build();
         return userRepository.save(user);
@@ -34,7 +35,8 @@ public class UserService {
     public User login(UserLoginDTO request) {
         User user = userRepository.findByUserId(request.getUserId());
         if (user != null) {
-            if(user.getPassword().equals(request.getPassword())){return user;}
+            if(passwordEncoder.matches(request.getPassword(), user.getPassword())){return user;}
+            //if(user.getPassword().equals(request.getPassword())){return user;}
             else{return null;}
         } else {
             return null;

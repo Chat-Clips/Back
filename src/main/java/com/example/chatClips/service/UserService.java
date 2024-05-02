@@ -28,8 +28,11 @@ public class UserService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId);
+    }
     public User login(UserLoginDTO request) {
-        User user = userRepository.findByUsername(request.getUsername()).orElse(null);
+        User user = userRepository.findByUserId(request.getUserId());
         if (user != null) {
             if(user.getPassword().equals(request.getPassword())){return user;}
             else{return null;}

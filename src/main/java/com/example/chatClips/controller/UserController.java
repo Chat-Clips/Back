@@ -42,7 +42,7 @@ public class UserController {
         }
 
         HttpSession session = http.getSession();
-        session.setAttribute("Username", loginMember.getUsername());
+        session.setAttribute("UserId", loginMember.getUserId());
         sessionList.put(session.getId(), session);
         session.setMaxInactiveInterval(18000); //5시간
         return "로그인 성공";
@@ -64,7 +64,7 @@ public class UserController {
         Map<String, String> lists = new HashMap<>();
         while(elements.hasMoreElements()) {
             HttpSession session = (HttpSession)elements.nextElement();
-            lists.put(session.getId(), String.valueOf(session.getAttribute("Username")));
+            lists.put(session.getId(), String.valueOf(session.getAttribute("UsernId")));
         }
         return lists;
     }
@@ -77,4 +77,10 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/id/{userId}")
+    public User getUserById(@PathVariable String userId) {
+        return userService.findByUserId(userId);
+    }
+
 }

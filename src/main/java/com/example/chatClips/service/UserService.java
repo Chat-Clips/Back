@@ -17,10 +17,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    public User signup(UserRequestDTO.JoinDTO request){
+    public String signup(UserRequestDTO.JoinDTO request){
         // 입력된 userId로 이미 가입된 사용자가 있는지 확인
         if (userRepository.existsByUserId(request.getUserId())) {
-            throw new IllegalArgumentException("이미 존재하는 userId입니다.");
+            return "이미 존재하는 userId입니다.";
         }
 
         User user = User.builder()
@@ -29,7 +29,8 @@ public class UserService {
             .password(passwordEncoder.encode(request.getPassword()))
             .createdAt(LocalDateTime.now())
             .build();
-        return userRepository.save(user);
+        userRepository.save(user);
+        return "회원가입이 완료되었습니다.";
     }
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

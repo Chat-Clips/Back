@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +30,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    private ApiResponse<UserResponseDTO.JoinDTO> signup(@Valid @RequestBody UserRequestDTO.JoinDTO request){
-        return ApiResponse.onSuccess(UserConverter.toJoinDTO(userService.signup(request)));
+    public ResponseEntity<String> signup(@RequestBody UserRequestDTO.JoinDTO request) {
+        String message = userService.signup(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
+//    @PostMapping("/signup")
+//    private ApiResponse<UserResponseDTO.JoinDTO> signup(@Valid @RequestBody UserRequestDTO.JoinDTO request){
+//        return ApiResponse.onSuccess(UserConverter.toJoinDTO(userService.signup(request)));
+//    }
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, @RequestBody UserLoginDTO request, HttpServletRequest http) {

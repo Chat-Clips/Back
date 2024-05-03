@@ -64,7 +64,7 @@ public class UserController {
         Map<String, String> lists = new HashMap<>();
         while(elements.hasMoreElements()) {
             HttpSession session = (HttpSession)elements.nextElement();
-            lists.put(session.getId(), String.valueOf(session.getAttribute("UsernId")));
+            lists.put(session.getId(), String.valueOf(session.getAttribute("UserId")));
         }
         return lists;
     }

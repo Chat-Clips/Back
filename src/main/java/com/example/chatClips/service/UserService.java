@@ -18,6 +18,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     public User signup(UserRequestDTO.JoinDTO request){
+        // 입력된 userId로 이미 가입된 사용자가 있는지 확인
+        if (userRepository.existsByUserId(request.getUserId())) {
+            throw new IllegalArgumentException("이미 존재하는 userId입니다.");
+        }
+
         User user = User.builder()
             .userId(request.getUserId())
             .username(request.getUsername())

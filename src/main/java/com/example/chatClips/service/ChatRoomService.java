@@ -47,9 +47,9 @@ public class ChatRoomService {
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         User user = userRepository.findByUserId(userId);
         UserChatRoom userChatRoom = UserChatRoom.builder()
-                .user(user)
-                .chatRoom(chatRoom)
-                .build();
+            .user(user)
+            .chatRoom(chatRoom)
+            .build();
         userChatRoomRepository.save(userChatRoom);
         return user.getUserId();
     }

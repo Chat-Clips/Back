@@ -1,12 +1,10 @@
 package com.example.chatClips.controller;
 
-import com.example.chatClips.apiPayload.ApiResponse;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
 import com.example.chatClips.dto.ChatRoomResponse;
 import com.example.chatClips.dto.ChatRoomResponse.UserChatRoomDTO;
-import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
 import com.example.chatClips.service.ChatRoomService;

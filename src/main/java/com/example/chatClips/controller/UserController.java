@@ -25,6 +25,7 @@ import static com.example.chatClips.domain.User.sessionList;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;

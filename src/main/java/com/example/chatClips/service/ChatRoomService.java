@@ -43,9 +43,9 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public String addUser(String roomId, String userName){
+    public String addUser(String roomId, String userId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        User user = userRepository.findByUserId(userName);
+        User user = userRepository.findByUserId(userId);
         UserChatRoom userChatRoom = UserChatRoom.builder()
                 .user(user)
                 .chatRoom(chatRoom)

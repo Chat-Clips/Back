@@ -33,5 +33,4 @@ public class UserChatRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_id")
     private ChatRoom chatRoom;
-    private String userUUID;
 }

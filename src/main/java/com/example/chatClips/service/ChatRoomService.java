@@ -1,8 +1,12 @@
 package com.example.chatClips.service;
 
+import com.example.chatClips.domain.Chat;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
+import com.example.chatClips.dto.ChatRoomRequest;
+import com.example.chatClips.dto.ChatRoomRequest.LoadChatRoom;
+import com.example.chatClips.dto.ChatRoomResponse.LoadChatRoomDTO;
 import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
@@ -31,6 +35,11 @@ public class ChatRoomService {
     }
 
 
+    public List<CommandDTO> loadChat(ChatRoomRequest.LoadChatRoom request){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(request.getRoomId());
+        return chatRoomRepository.getAllChat(chatRoom);
+
+    }
     public void increaseUser(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         chatRoom.setUserCount(chatRoom.getUserCount() + 1);
@@ -73,6 +82,7 @@ public class ChatRoomService {
         }
         return input;
     }
+
 //    public List<String> getUserList(String roomId){
 //        List<String> list = new ArrayList<>();
 //        ChatRoom chatRoom = chatRepository.findByRoomId(roomId);

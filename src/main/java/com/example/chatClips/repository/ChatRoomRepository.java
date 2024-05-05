@@ -17,7 +17,4 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     @Query(value = "select new com.example.chatClips.dto.CommandDTO(user.username, chat.chat) from User user inner join Chat chat on chat.user = user where chat.chatRoom = :chatRoom order by chat.time")
     public List<CommandDTO> getAllChat(@Param("chatRoom") ChatRoom chatRoom);
-//
-//    @Query(value = "select new com.example.chatClips.dto.ChatRoomResponse.LoadChatRoomDTO(user.username, chat.chat) from Chat chat inner join User user on chat.user = user where chat.chatRoom = :chatRoom order by chat.time")
-//    public List<LoadChatRoomDTO> loadChat(@Param("chatRoom") ChatRoom chatRoom);
 }

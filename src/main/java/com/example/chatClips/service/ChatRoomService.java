@@ -3,9 +3,12 @@ package com.example.chatClips.service;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
+import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,13 +43,13 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public String addUser(String roomId, String userName){
+    public String addUser(String roomId, String userId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
-        User user = userRepository.findByUserId(userName);
+        User user = userRepository.findByUserId(userId);
         UserChatRoom userChatRoom = UserChatRoom.builder()
-                .user(user)
-                .chatRoom(chatRoom)
-                .build();
+            .user(user)
+            .chatRoom(chatRoom)
+            .build();
         userChatRoomRepository.save(userChatRoom);
         return user.getUserId();
     }
@@ -60,6 +63,15 @@ public class ChatRoomService {
         User user = userRepository.findByUserId(userId);
         UserChatRoom userChatRoom = userChatRoomRepository.findByUser(user);
         userChatRoomRepository.delete(userChatRoom);
+    }
+    public String exitChatting(String roomId){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        List<CommandDTO> chatList = chatRoomRepository.getAllChat(chatRoom);
+        String input = new String();
+        for(int i = 0; i < chatList.size(); i++) {
+            input += chatList.get(i).getUserName() + " : " + chatList.get(i).getChat() + '\n';
+        }
+        return input;
     }
 //    public List<String> getUserList(String roomId){
 //        List<String> list = new ArrayList<>();

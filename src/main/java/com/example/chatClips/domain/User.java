@@ -45,7 +45,7 @@ public class User {
     private List<Feedback> feedback = new ArrayList<>();
 
 
-    public static Hashtable sessionList = new Hashtable();
+
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();

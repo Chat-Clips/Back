@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Builder
+@Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Chat {

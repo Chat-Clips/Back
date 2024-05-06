@@ -62,7 +62,7 @@ public class ChatController {
         chatRepository.save(chatting);
         template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
     }
-
+//
 //    @EventListener
 //    public void webSocketDisconnectListener(SessionDisconnectEvent event){
 //        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());

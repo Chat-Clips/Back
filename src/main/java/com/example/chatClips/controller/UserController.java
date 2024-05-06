@@ -115,8 +115,8 @@ public class UserController {
     public String getUserById(@PathVariable String userId) {
 
         User user = userService.findByUserId(userId);
-        String username = user.getUsername();
-        return username;
+        return user.getUsername();
+
     }
 
 }

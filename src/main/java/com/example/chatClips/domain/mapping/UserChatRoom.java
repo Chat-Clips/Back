@@ -11,12 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Builder
 @Setter
+@Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserChatRoom {
@@ -31,5 +33,4 @@ public class UserChatRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_id")
     private ChatRoom chatRoom;
-    private String userUUID;
 }

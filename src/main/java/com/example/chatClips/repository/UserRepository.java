@@ -1,6 +1,8 @@
 package com.example.chatClips.repository;
 
+import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 
     public User findByUserId(String userId);
+
+    boolean existsByUserId(String userId);
 
 }

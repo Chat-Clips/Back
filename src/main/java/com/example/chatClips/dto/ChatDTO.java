@@ -1,5 +1,6 @@
 package com.example.chatClips.dto;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +15,4 @@ public class ChatDTO {
     private String roomId;
     private String sender;
     private String message;
-    private String time;
 }

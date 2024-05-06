@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,12 +29,11 @@ public class ChatRoomResponse {
         private String username;
         private String chat;
     }
-
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class LoadChat{
-        private List<CommandDTO> loadChat;
+    public static class LoadChatList{
+        List<LoadChatDTO> loadChats;
     }
 }

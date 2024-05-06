@@ -7,7 +7,7 @@ import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
 import com.example.chatClips.dto.ChatRoomRequest;
 import com.example.chatClips.dto.ChatRoomResponse;
-import com.example.chatClips.dto.ChatRoomResponse.LoadChat;
+import com.example.chatClips.dto.ChatRoomResponse.LoadChatList;
 import com.example.chatClips.dto.ChatRoomResponse.LoadChatRoomDTO;
 import com.example.chatClips.dto.ChatRoomResponse.UserChatRoomDTO;
 import com.example.chatClips.dto.CommandDTO;
@@ -35,7 +35,7 @@ public class ChatRoomController {
     private final UserRepository userRepository;
 
     @GetMapping("/loadChatting")
-    public ApiResponse<LoadChat> loadChatting(@Valid @RequestBody ChatRoomRequest.LoadChatRoom request) {
+    public ApiResponse<LoadChatList> loadChatting(@Valid @RequestBody ChatRoomRequest.LoadChatRoom request) {
         return ApiResponse.onSuccess(ChatRoomConverter.toLoadChatRoom(chatRoomService.loadChat(request)));
     }
 

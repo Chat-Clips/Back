@@ -32,9 +32,6 @@ public class UserService {
         userRepository.save(user);
         return "회원가입이 완료되었습니다.";
     }
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }

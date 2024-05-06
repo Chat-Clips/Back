@@ -11,4 +11,9 @@ public class UserConverter {
             .createdAt(user.getCreatedAt())
             .build();
     }
+    public static UserResponseDTO.FindUserDTO toFindUser(User user){
+        return UserResponseDTO.FindUserDTO.builder()
+            .user(user)
+            .build();
+    }
 }

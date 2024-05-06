@@ -101,14 +101,9 @@ public class UserController {
         }
         return lists;
     }
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> userOptional = userService.findByUsername(username);
-        if (userOptional.isPresent()) {
-            return ResponseEntity.ok(userOptional.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{userId}")
+    public ApiResponse<UserResponseDTO.FindUserDTO> getUserByUsername(@PathVariable String userId) {
+        return  ApiResponse.onSuccess(UserConverter.toFindUser(userService.findByUserId(userId)));
     }
 
     @GetMapping("/id/{userId}")

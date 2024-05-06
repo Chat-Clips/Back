@@ -5,9 +5,8 @@ import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
 import com.example.chatClips.dto.ChatRoomRequest;
-import com.example.chatClips.dto.ChatRoomRequest.LoadChatRoom;
-import com.example.chatClips.dto.ChatRoomResponse.LoadChatRoomDTO;
 import com.example.chatClips.dto.CommandDTO;
+import com.example.chatClips.dto.LoadChatDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
@@ -35,9 +34,9 @@ public class ChatRoomService {
     }
 
 
-    public List<CommandDTO> loadChat(ChatRoomRequest.LoadChatRoom request){
+    public List<LoadChatDTO> loadChat(ChatRoomRequest.LoadChatRoom request){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(request.getRoomId());
-        return chatRoomRepository.getAllChat(chatRoom);
+        return chatRoomRepository.getPrevChat(chatRoom);
 
     }
     public void increaseUser(String roomId){

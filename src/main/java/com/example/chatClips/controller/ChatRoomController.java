@@ -5,12 +5,9 @@ import com.example.chatClips.converter.ChatRoomConverter;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
-import com.example.chatClips.dto.ChatRoomRequest;
 import com.example.chatClips.dto.ChatRoomResponse;
 import com.example.chatClips.dto.ChatRoomResponse.LoadChatList;
-import com.example.chatClips.dto.ChatRoomResponse.LoadChatRoomDTO;
 import com.example.chatClips.dto.ChatRoomResponse.UserChatRoomDTO;
-import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
 import com.example.chatClips.service.ChatRoomService;
@@ -20,7 +17,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,8 +31,8 @@ public class ChatRoomController {
     private final UserRepository userRepository;
 
     @GetMapping("/loadChatting")
-    public ApiResponse<LoadChatList> loadChatting(@Valid @RequestBody ChatRoomRequest.LoadChatRoom request) {
-        return ApiResponse.onSuccess(ChatRoomConverter.toLoadChatRoom(chatRoomService.loadChat(request)));
+    public ApiResponse<LoadChatList> loadChatting(@Valid @RequestParam String roomId) {
+        return ApiResponse.onSuccess(ChatRoomConverter.toLoadChatRoom(chatRoomService.loadChat(roomId)));
     }
 
     // chatRoom 리스트 반환

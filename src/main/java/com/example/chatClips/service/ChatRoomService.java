@@ -1,16 +1,13 @@
 package com.example.chatClips.service;
 
-import com.example.chatClips.domain.Chat;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
-import com.example.chatClips.dto.ChatRoomRequest;
 import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.dto.LoadChatDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +31,8 @@ public class ChatRoomService {
     }
 
 
-    public List<LoadChatDTO> loadChat(ChatRoomRequest.LoadChatRoom request){
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(request.getRoomId());
+    public List<LoadChatDTO> loadChat(String roomId){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         return chatRoomRepository.getPrevChat(chatRoom);
 
     }

@@ -1,5 +1,6 @@
 package com.example.chatClips.dto;
 
+import com.example.chatClips.domain.User;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +18,11 @@ public class UserResponseDTO {
         private LocalDateTime createdAt;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FindUserDTO{
+        private User user;
+    }
 }

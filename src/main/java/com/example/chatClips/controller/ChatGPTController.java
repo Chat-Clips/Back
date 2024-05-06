@@ -1,55 +1,48 @@
 package com.example.chatClips.controller;
 
-import com.example.chatClips.dto.CompletionDto;
-import com.example.chatClips.service.ChatGPTService;
+import com.example.chatClips.apiPayload.ApiResponse;
+import com.example.chatClips.dto.ChatGPTRequest;
+import com.example.chatClips.dto.ChatGPTResponse;
+import com.example.chatClips.dto.ChatgptApiRequest;
+import com.example.chatClips.dto.ChatgptApiResponse;
+import com.example.chatClips.dto.ChatgptApiResponse.SendMessageResultDTO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.chatClips.dto.ChatCompletionDTO;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.Map;
+import org.springframework.web.client.RestTemplate;
+
 @Slf4j
 @RestController
-@RequestMapping(value = "/api/v1/chatGpt")
+@RequiredArgsConstructor
+@RequestMapping(value = "/api")
 public class ChatGPTController {
-    private final ChatGPTService chatGPTService;
 
-    public ChatGPTController(ChatGPTService chatGPTService) {
-        this.chatGPTService = chatGPTService;
+    @Value("${openai.model}")
+    private String model;
+
+    @Value("${openai.api.url}")
+    private String apiURL;
+
+    @Autowired
+    private RestTemplate template;
+
+    @GetMapping("/chat")
+    public ApiResponse<SendMessageResultDTO> chat(@RequestBody ChatgptApiRequest.SendMessageDTO userPrompt) {
+        String systemPrompt = "You are an nlp that summarizes the contents of the meeting. If students finish chatting after chatting, you should summarize based on the contents of the chat. However, the contents of the chat are related to computer science, so you have to think about it when processing. However, the maximum number of printouts can be up to 200 characters. And you have to print them out in Korean.";
+        ChatGPTRequest request = new ChatGPTRequest(model, systemPrompt, userPrompt.getMessage());
+        ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
+        return ApiResponse.onSuccess(ChatgptApiResponse.SendMessageResultDTO.builder()
+            .message(chatGPTResponse.getChoices().get(0).getMessage().getContent())
+            .build()
+        );
     }
 
-
-    /**
-     * |chatClips가 사용하는 거 | ChatCompletionDTO: ChatRequestDTO:를 이용하여 작동.
-     *
-     * [API] 최신 ChatGPT 프롬프트 명령어를 수행합니다. : gpt-4, gpt-4 turbo, gpt-3.5-turbo
-     *
-     * @param chatCompletionDTO
-     * @return
-     */
-    @PostMapping("/prompt")
-    public ResponseEntity<Map<String, Object>> selectPrompt(@RequestBody ChatCompletionDTO chatCompletionDTO) {
-        log.debug("param :: " + chatCompletionDTO.toString());
-        Map<String, Object> result = chatGPTService.prompt(chatCompletionDTO);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    /**
-     * [API] Legacy ChatGPT 프롬프트 명령을 수행합니다. : gpt-3.5-turbo-instruct, babbage-002, davinci-002
-     *
-     * @param completionDto {}
-     * @return ResponseEntity<Map < String, Object>>
-     */
-    @PostMapping("/legacyPrompt")
-    public ResponseEntity<Map<String, Object>> selectLegacyPrompt(@RequestBody CompletionDto completionDto) {
-        log.debug("param :: " + completionDto.toString());
-        Map<String, Object> result = chatGPTService.legacyPrompt(completionDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 }

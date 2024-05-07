@@ -50,7 +50,7 @@ public class UserController {
         if (existingSession != null) {
             return "이미 로그인된 사용자입니다";
         }
-        http.getSession().invalidate();
+        //http.getSession().invalidate();
         HttpSession session = http.getSession();
         session.setAttribute("UserId", loginMember.getUserId());
         sessionList.put(session.getId(), session);

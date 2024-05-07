@@ -27,6 +27,7 @@ public class UserService {
             .userId(request.getUserId())
             .username(request.getUsername())
             .password(passwordEncoder.encode(request.getPassword()))
+            .role("ROLE_USER")
             .createdAt(LocalDateTime.now())
             .build();
         userRepository.save(user);

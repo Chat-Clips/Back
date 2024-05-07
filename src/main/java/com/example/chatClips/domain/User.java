@@ -40,6 +40,8 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    private String role;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Feedback> feedback = new ArrayList<>();

@@ -16,7 +16,14 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
     public ChatRoom findByRoomId(String roomId);
 
-    @Query(value = "select new com.example.chatClips.dto.CommandDTO(user.username, chat.chat) from User user inner join Chat chat on chat.user = user where chat.chatRoom = :chatRoom order by chat.time")
+    @Query("""
+    select new com.example.chatClips.dto.LoadChatDTO(user.username, chat.chat, chat.time)
+    from User user
+    inner join Chat chat on chat.user = user
+    where chat.chatRoom = :chatRoom
+    order by chat.time
+    limit 30
+    """)
     public List<CommandDTO> getAllChat(@Param("chatRoom") ChatRoom chatRoom);
     @Query(value = "select new com.example.chatClips.dto.LoadChatDTO(user.username, chat.chat, chat.time) from User user inner join Chat chat on chat.user = user where chat.chatRoom = :chatRoom order by chat.time")
     public List<LoadChatDTO> getPrevChat(@Param("chatRoom") ChatRoom chatRoom);

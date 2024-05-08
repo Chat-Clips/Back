@@ -45,11 +45,11 @@ public class UserController {
         if(loginMember == null) {
             return "로그인 실패";
         }
-        // 이미 세션이 존재하는지 확인
-        HttpSession existingSession = findExistingSession(loginMember.getUserId());
-        if (existingSession != null) {
-            return "이미 로그인된 사용자입니다";
-        }
+//        // 이미 세션이 존재하는지 확인
+//        HttpSession existingSession = findExistingSession(loginMember.getUserId());
+//        if (existingSession != null) {
+//            return "이미 로그인된 사용자입니다";
+//        }
         //http.getSession().invalidate();
         HttpSession session = http.getSession();
         session.setAttribute("UserId", loginMember.getUserId());

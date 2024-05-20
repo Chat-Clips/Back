@@ -10,6 +10,7 @@ import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
 import com.example.chatClips.service.ChatRoomService;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -100,20 +101,24 @@ public class ChatController {
 
         chatRoomService.decreaseUser(roomId);
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
-        String userName = chatRoomService.getUserName(roomId, userId);
-        chatRoomService.deleteUser(roomId,userId);
+        ////
+        List<User> userList = userChatRoomRepository.findByChatRoom(chatRoomRepository.findByRoomId(roomId));
+        for(User user : userList){
+            chatRoomService.decreaseUser(roomId);
+            chatRoomService.deleteUser(roomId, user.getUserId());
+            log.info("User Disconnected : " + user.getUserId());
 
-        if(userName != null){
-            log.info("User Disconnected : " + userName);
-
-            ChatDTO chat = ChatDTO.builder()
-                .type(ChatDTO.MessageType.LEAVE)
-                .sender(userId)
-                .message(userName + "님이 퇴장하였습니다.")
-                .build();
-
-            template.convertAndSend("/sub/chatroom/" + roomId,chat);
+//            ChatDTO chat = ChatDTO.builder()
+//                .type(ChatDTO.MessageType.LEAVE)
+//                .sender(userId)
+//                .message(userName + "님이 퇴장하였습니다.")
+//                .build();
+//
+//            template.convertAndSend("/sub/chatroom/" + roomId,chat);
         }
+        ////
+
+
     }
 
 //    // 채팅에 참여한 유저 리스트 반환

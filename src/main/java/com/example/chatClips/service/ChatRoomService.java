@@ -8,6 +8,7 @@ import com.example.chatClips.dto.LoadChatDTO;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -79,12 +80,11 @@ public class ChatRoomService {
         return input;
     }
 
-//    public List<String> getUserList(String roomId){
-//        List<String> list = new ArrayList<>();
-//        ChatRoom chatRoom = chatRepository.findByRoomId(roomId);
-//        chatRoom.getUserList().forEach((key, value) -> list.add(value));
-//        return list;
-//    }
+    public List<User> getUserList(String roomId){
+        List<String> list = new ArrayList<>();
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        return userChatRoomRepository.findByChatRoom(chatRoom);
+    }
 //
 //    public String isDuplicateName(String roomId, String username){
 //        ChatRoom chatRoom = chatRepository.findByRoomId(roomId);

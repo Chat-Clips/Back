@@ -38,7 +38,7 @@ function connect(event){
   chatPage.classList.remove('hidden');
 
   // 연결하고자하는 Socket 의 endPoint
-  let socket = new SockJS('/ws-stomp');
+  let socket = new SockJS('/ws');
   stompClient = Stomp.over(socket);
 
   stompClient.connect({},onConnected,onError);
@@ -49,7 +49,7 @@ function connect(event){
 function onConnected() {
 
   // sub 할 url => /sub/chat/room/roomId 로 구독한다
-  stompClient.subscribe('/sub/chat/room/' + roomId, onMessageReceived);
+  stompClient.subscribe('/sub/chatroom/' + roomId, onMessageReceived);
 
   // 서버에 username 을 가진 유저가 들어왔다는 것을 알림
   // /pub/chat/enterUser 로 메시지를 보냄

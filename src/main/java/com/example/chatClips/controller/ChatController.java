@@ -11,6 +11,7 @@ import com.example.chatClips.repository.UserRepository;
 import com.example.chatClips.service.ChatRoomService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -41,13 +42,15 @@ public class ChatController {
 
     @MessageMapping("/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
-        chatRoomService.increaseUser(chat.getRoomId());
+        //chatRoomService.increaseUser(chat.getRoomId());
 
         String userId = chatRoomService.addUser(chat.getRoomId(), chat.getSender());
 
         headerAccessor.getSessionAttributes().put("userId", userId);
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
-        System.out.println((String) headerAccessor.getSessionAttributes().get("userId")+"\n"+ (String) headerAccessor.getSessionAttributes().get("roomId")+"\n");
+        for(Map.Entry<String, Object> entry: headerAccessor.getSessionAttributes().entrySet()){
+            System.out.println("first: "+entry.getKey()+ "second:"+entry.getValue()+"\n");
+        }
         User user = userRepository.findByUserId(userId);
         chat.setMessage(user.getUsername() + "님이 입장하셨습니다.");
         template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
@@ -74,12 +77,14 @@ public class ChatController {
         String userId = (String) headerAccessor.getSessionAttributes().get("userId");
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
 
-        chatRoomService.decreaseUser(roomId);
+        //chatRoomService.decreaseUser(roomId);
 
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
         String userName = chatRoomService.getUserName(roomId, userId);
         chatRoomService.deleteUser(roomId,userId);
-
+        if(!headerAccessor.getSessionAttributes().isEmpty()){
+            headerAccessor.getSessionAttributes().remove(userId, roomId);
+        }
         if(userName != null){
             log.info("User Disconnected : " + userName);
 
@@ -92,7 +97,6 @@ public class ChatController {
             template.convertAndSend("/sub/chatroom/" + roomId,chat);
         }
     }
-
 
 
 //    // 채팅에 참여한 유저 리스트 반환

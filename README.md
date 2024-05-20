@@ -1,10 +1,16 @@
+# 프로젝트 이름
+<hr>
+<h3>ChatClips</h3>
+
 # 프로젝트 개요
+<hr>
 본 프로젝트는 회의, 채팅 요약 서비스를 제공하는 협업 툴을 목적으로 함
 
 # 기술적 특징
-- 소설 로그인(Google) API
-- Firebase Chat API
+<hr>
+- 세션 방식 로그인 구현
+- STOMP 프로토콜을 이욯한 실시간 채팅 구현
 - React
 - Spring
 - h2
-- RDS
+- MYSQL

@@ -11,6 +11,7 @@ import com.example.chatClips.repository.UserRepository;
 import com.example.chatClips.service.ChatRoomService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -41,12 +42,15 @@ public class ChatController {
 
     @MessageMapping("/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
-        chatRoomService.increaseUser(chat.getRoomId());
+        //chatRoomService.increaseUser(chat.getRoomId());
 
         String userId = chatRoomService.addUser(chat.getRoomId(), chat.getSender());
 
         headerAccessor.getSessionAttributes().put("userId", userId);
         headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
+        for(Map.Entry<String, Object> entry: headerAccessor.getSessionAttributes().entrySet()){
+            System.out.println("first: "+entry.getKey()+ "second:"+entry.getValue()+"\n");
+        }
         User user = userRepository.findByUserId(userId);
         chat.setMessage(user.getUsername() + "님이 입장하셨습니다.");
         template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
@@ -66,32 +70,6 @@ public class ChatController {
         chatRepository.save(chatting);
         template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
     }
-//    @PostMapping("/exitChatRoom")
-//    public void webSocketDisconnectListener(SessionDisconnectEvent event){
-//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-//
-//        String userId = (String) headerAccessor.getSessionAttributes().get("userId");
-//        String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
-//
-//        chatRoomService.decreaseUser(roomId);
-//
-//        //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
-//        String userName = chatRoomService.getUserName(roomId, userId);
-//        chatRoomService.deleteUser(roomId,userId);
-//
-//        if(userName != null){
-//            log.info("User Disconnected : " + userName);
-//
-//            ChatDTO chat = ChatDTO.builder()
-//                .type(ChatDTO.MessageType.LEAVE)
-//                .sender(userId)
-//                .message(userName + "님이 퇴장하였습니다.")
-//                .build();
-//
-//            template.convertAndSend("/sub/chatroom/" + roomId,chat);
-//        }
-//    }
-//
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event){
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
@@ -99,27 +77,27 @@ public class ChatController {
         String userId = (String) headerAccessor.getSessionAttributes().get("userId");
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
 
-        chatRoomService.decreaseUser(roomId);
+        //chatRoomService.decreaseUser(roomId);
+
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
-        ////
-        List<User> userList = userChatRoomRepository.findByChatRoom(chatRoomRepository.findByRoomId(roomId));
-        for(User user : userList){
-            chatRoomService.decreaseUser(roomId);
-            chatRoomService.deleteUser(roomId, user.getUserId());
-            log.info("User Disconnected : " + user.getUserId());
-
-//            ChatDTO chat = ChatDTO.builder()
-//                .type(ChatDTO.MessageType.LEAVE)
-//                .sender(userId)
-//                .message(userName + "님이 퇴장하였습니다.")
-//                .build();
-//
-//            template.convertAndSend("/sub/chatroom/" + roomId,chat);
+        String userName = chatRoomService.getUserName(roomId, userId);
+        chatRoomService.deleteUser(roomId,userId);
+        if(!headerAccessor.getSessionAttributes().isEmpty()){
+            headerAccessor.getSessionAttributes().remove(userId, roomId);
         }
-        ////
+        if(userName != null){
+            log.info("User Disconnected : " + userName);
 
+            ChatDTO chat = ChatDTO.builder()
+                .type(ChatDTO.MessageType.LEAVE)
+                .sender(userId)
+                .message(userName + "님이 퇴장하였습니다.")
+                .build();
 
+            template.convertAndSend("/sub/chatroom/" + roomId,chat);
+        }
     }
+
 
 //    // 채팅에 참여한 유저 리스트 반환
 //    @GetMapping("/userlist")

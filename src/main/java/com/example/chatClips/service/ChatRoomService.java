@@ -67,7 +67,8 @@ public class ChatRoomService {
 
     public void deleteUser(String roomId, String userId){
         User user = userRepository.findByUserId(userId);
-        UserChatRoom userChatRoom = userChatRoomRepository.findByUser(user);
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        UserChatRoom userChatRoom = userChatRoomRepository.findByUserAndChatRoom(user, chatRoom);
         userChatRoomRepository.delete(userChatRoom);
     }
     public String exitChatting(String roomId){

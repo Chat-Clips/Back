@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserChatRoomRepository extends JpaRepository<UserChatRoom, Long> {
 
-    public UserChatRoom findByUser(User user);
+    public UserChatRoom findByUserAndChatRoom(User user, ChatRoom chatRoom);
     @Query("""
     select userChatRoom.user
     from UserChatRoom userChatRoom

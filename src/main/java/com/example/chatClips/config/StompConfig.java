@@ -8,7 +8,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class SpringConfig implements WebSocketMessageBrokerConfigurer {
+public class StompConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
@@ -18,6 +18,10 @@ public class SpringConfig implements WebSocketMessageBrokerConfigurer {
             //.withSockJS();
     }
 
+//    @Override
+//    public void registerStompEndpoints(StompEndpointRegistry registry) {
+//        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
+//    }
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
         //메시지 구독 url

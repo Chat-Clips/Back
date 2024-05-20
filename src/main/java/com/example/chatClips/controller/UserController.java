@@ -23,7 +23,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 @RequestMapping("/user")
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;

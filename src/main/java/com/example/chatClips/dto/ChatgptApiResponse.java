@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class ChatgptApiResponse {
 
     @Builder
@@ -13,5 +15,6 @@ public class ChatgptApiResponse {
     @AllArgsConstructor
     public static class SendMessageResultDTO{
         String message;
+        List<String> recommemdedSites;
     }
 }

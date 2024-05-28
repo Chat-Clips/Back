@@ -27,11 +27,17 @@ public class ChatRoomService {
             .roomId(UUID.randomUUID().toString())
             .roomName(roomName)
             .userCount(0L)
+            .isTerminated(false)
             .build();
         return chatRoomRepository.save(chatRoom).getRoomId();
     }
 
 
+    public void terminateRoom(String roomId){
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        chatRoom.setIsTerminated(true);
+        chatRoomRepository.save(chatRoom);
+    }
     public List<LoadChatDTO> loadChat(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         return chatRoomRepository.getPrevChat(chatRoom);
@@ -60,6 +66,7 @@ public class ChatRoomService {
         return user.getUserId();
     }
     public String getUserName(String roomId,String userId){
+        System.out.println("이름: "+ userId);
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         User user = userRepository.findByUserId(userId);
         return user.getUsername();

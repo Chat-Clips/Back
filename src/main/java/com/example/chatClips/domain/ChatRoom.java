@@ -36,7 +36,7 @@ public class ChatRoom {
     private String roomId;
     private String roomName;
     private Long userCount;
-
+    private Boolean isTerminated;
     @OneToMany(mappedBy = "chatRoom")
     private List<UserChatRoom> userChatRoomList = new ArrayList<>();
 

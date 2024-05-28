@@ -78,9 +78,9 @@ public class ChatController {
         String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
 
         //chatRoomService.decreaseUser(roomId);
-
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
         String userName = chatRoomService.getUserName(roomId, userId);
+        chatRoomService.terminateRoom(roomId);
         chatRoomService.deleteUser(roomId,userId);
         if(!headerAccessor.getSessionAttributes().isEmpty()){
             headerAccessor.getSessionAttributes().remove(userId, roomId);

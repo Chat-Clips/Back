@@ -40,4 +40,8 @@ public class FeedbackController {
     public ApiResponse<FeedbackResponse.GetAllDTO> getAllPosts() {
         return ApiResponse.onSuccess(FeedbackConverter.toGetAll(feedbackService.getAllPosts()));
     }
+    @GetMapping("feedback/{id}")
+    public ApiResponse<FeedbackResponse.GetFeedbackDTO> getFeedback(@PathVariable("id") Long id){
+        return ApiResponse.onSuccess(FeedbackConverter.toGetFeedbackDTO(feedbackService.getFeedback(id)));
+    }
 }

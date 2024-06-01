@@ -1,6 +1,7 @@
 package com.example.chatClips.dto;
 
 import com.example.chatClips.domain.Feedback;
+import com.example.chatClips.domain.User;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,17 @@ public class FeedbackResponse {
     @AllArgsConstructor
     public static class GetAllDTO{
         private List<Feedback> feedbackList;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetFeedbackDTO{
+        private Long id;
+        private String title;
+        private String text;
+        private User user;
+        private LocalDateTime createdAt;
     }
 }

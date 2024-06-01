@@ -54,4 +54,8 @@ public class FeedbackService {
     public List<Feedback> getAllPosts() {    //게시글 목록 조회
        return feedbackRepository.findAll();
     }
+
+    public Feedback getFeedback(Long id) {
+        return feedbackRepository.findById(id).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
+    }
 }

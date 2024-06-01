@@ -30,4 +30,13 @@ public class FeedbackConverter {
             .feedbackList(feedbackList)
             .build();
     }
+    public static FeedbackResponse.GetFeedbackDTO toGetFeedbackDTO(Feedback feedback){
+        return FeedbackResponse.GetFeedbackDTO.builder()
+            .id(feedback.getId())
+            .title(feedback.getTitle())
+            .text(feedback.getText())
+            .user(feedback.getUser())
+            .createdAt(feedback.getCreatedAt())
+            .build();
+    }
 }

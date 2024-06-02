@@ -41,7 +41,7 @@ public class ChatGPTController {
 
     @PostMapping("/chat")
     public ApiResponse<SendMessageResultDTO> chat(@RequestBody ChatgptApiRequest.SendMessageDTO userPrompt) {
-        String systemPrompt = "You are an nlp that summarizes the contents of the meeting. If students finish chatting after chatting, you should summarize based on the contents of the chat. However, the contents of the chat are related to computer science, so you have to think about it when processing. However, the maximum number of printouts can be up to 200 characters. And you have to print them out in Korean.";
+        String systemPrompt = "You are an nlp that summarizes the contents of the meeting. If students finish chatting after chatting, you should just summarize based on the contents of the chat. However, the contents of the chat are related to computer science, so you have to think about it when processing. However, the maximum number of printouts can be up to 200 characters. And you have to print them out in Korean. Next recommendations must be made only please when the chat conservation is related to computer, development. At the end, provide two site links that you can refer to related to the chat conversation when chat summary is only related to computer, development. Please recommend official and blog-oriented links as the recommended links.";
         ChatGPTRequest request = new ChatGPTRequest(model, systemPrompt, userPrompt.getMessage());
         ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
         String summary = chatGPTResponse.getChoices().get(0).getMessage().getContent();

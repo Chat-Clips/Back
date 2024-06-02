@@ -78,7 +78,7 @@ public class EmbeddingService {
         // 유사도 계산
         double maxSimilarity = -1;
         String recommendedSite = null;
-        double threshold =0.015;
+        double threshold =0.034;
         for (int i = 0; i < embeddings.size(); i++) {
             double[] embedding = embeddings.get(i);
             double similarity = calculateSimilarity(summaryEmbedding, embedding);

@@ -1,18 +1,26 @@
 package com.example.chatClips.service;
 
+import com.example.chatClips.domain.Chat;
 import com.example.chatClips.domain.ChatRoom;
 import com.example.chatClips.domain.User;
 import com.example.chatClips.domain.mapping.UserChatRoom;
+import com.example.chatClips.dto.ChatDTO;
 import com.example.chatClips.dto.CommandDTO;
 import com.example.chatClips.dto.LoadChatDTO;
+import com.example.chatClips.repository.ChatRepository;
 import com.example.chatClips.repository.ChatRoomRepository;
 import com.example.chatClips.repository.UserChatRoomRepository;
 import com.example.chatClips.repository.UserRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +30,9 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
     private final UserChatRoomRepository userChatRoomRepository;
     private final UserRepository userRepository;
+    private final SimpMessageSendingOperations template;
+    private final ChatRepository chatRepository;
+
     public String create(String roomName){
         ChatRoom chatRoom = ChatRoom.builder()
             .roomId(UUID.randomUUID().toString())
@@ -32,7 +43,58 @@ public class ChatRoomService {
         return chatRoomRepository.save(chatRoom).getRoomId();
     }
 
+    public void enterUser(ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
+        String userId = addUser(chat.getRoomId(), chat.getSender());
 
+        headerAccessor.getSessionAttributes().put("userId", userId);
+        headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
+        for(Map.Entry<String, Object> entry: headerAccessor.getSessionAttributes().entrySet()){
+            System.out.println("first: "+entry.getKey()+ "second:"+entry.getValue()+"\n");
+        }
+        User user = userRepository.findByUserId(userId);
+        chat.setMessage(user.getUsername() + "님이 입장하셨습니다.");
+        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
+    }
+
+    public void sendMessage(ChatDTO chat){
+        chat.setMessage(chat.getMessage());
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chat.getRoomId());
+        User user = userRepository.findByUserId(chat.getSender());
+        Chat chatting = Chat.builder()
+            .chatRoom(chatRoom)
+            .user(user)
+            .chat(chat.getMessage())
+            .time(LocalDateTime.now())
+            .build();
+        chatRepository.save(chatting);
+        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
+    }
+
+    public void exit(StompHeaderAccessor headerAccessor){
+
+        String userId = (String) headerAccessor.getSessionAttributes().get("userId");
+        String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
+
+        //chatRoomService.decreaseUser(roomId);
+        //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
+        String userName = getUserName(roomId, userId);
+        terminateRoom(roomId);
+        deleteUser(roomId,userId);
+        if(!headerAccessor.getSessionAttributes().isEmpty()){
+            headerAccessor.getSessionAttributes().remove(userId, roomId);
+        }
+        if(userName != null){
+            log.info("User Disconnected : " + userName);
+
+            ChatDTO chat = ChatDTO.builder()
+                .type(ChatDTO.MessageType.LEAVE)
+                .sender(userId)
+                .message(userName + "님이 퇴장하였습니다.")
+                .build();
+
+            template.convertAndSend("/sub/chatroom/" + roomId,chat);
+        }
+    }
     public void terminateRoom(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         chatRoom.setIsTerminated(true);

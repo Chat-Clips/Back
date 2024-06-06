@@ -42,60 +42,18 @@ public class ChatController {
 
     @MessageMapping("/enterUser")
     public void enterUser(@Payload ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
-        //chatRoomService.increaseUser(chat.getRoomId());
-
-        String userId = chatRoomService.addUser(chat.getRoomId(), chat.getSender());
-
-        headerAccessor.getSessionAttributes().put("userId", userId);
-        headerAccessor.getSessionAttributes().put("roomId", chat.getRoomId());
-        for(Map.Entry<String, Object> entry: headerAccessor.getSessionAttributes().entrySet()){
-            System.out.println("first: "+entry.getKey()+ "second:"+entry.getValue()+"\n");
-        }
-        User user = userRepository.findByUserId(userId);
-        chat.setMessage(user.getUsername() + "님이 입장하셨습니다.");
-        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
+        chatRoomService.enterUser(chat, headerAccessor);
     }
 
     @MessageMapping("/sendMessage")
     public void sendMessage(@Payload ChatDTO chat){
-        chat.setMessage(chat.getMessage());
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chat.getRoomId());
-        User user = userRepository.findByUserId(chat.getSender());
-        Chat chatting = Chat.builder()
-            .chatRoom(chatRoom)
-            .user(user)
-            .chat(chat.getMessage())
-            .time(LocalDateTime.now())
-            .build();
-        chatRepository.save(chatting);
-        template.convertAndSend("/sub/chatroom/" + chat.getRoomId(), chat);
+        chatRoomService.sendMessage(chat);
     }
     @EventListener
     public void webSocketDisconnectListener(SessionDisconnectEvent event){
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        String userId = (String) headerAccessor.getSessionAttributes().get("userId");
-        String roomId = (String) headerAccessor.getSessionAttributes().get("roomId");
-
-        //chatRoomService.decreaseUser(roomId);
-        //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
-        String userName = chatRoomService.getUserName(roomId, userId);
-        chatRoomService.terminateRoom(roomId);
-        chatRoomService.deleteUser(roomId,userId);
-        if(!headerAccessor.getSessionAttributes().isEmpty()){
-            headerAccessor.getSessionAttributes().remove(userId, roomId);
-        }
-        if(userName != null){
-            log.info("User Disconnected : " + userName);
-
-            ChatDTO chat = ChatDTO.builder()
-                .type(ChatDTO.MessageType.LEAVE)
-                .sender(userId)
-                .message(userName + "님이 퇴장하였습니다.")
-                .build();
-
-            template.convertAndSend("/sub/chatroom/" + roomId,chat);
-        }
+        chatRoomService.exit(headerAccessor);
     }
 
 

@@ -33,10 +33,6 @@ public class UserController {
         String message = userService.signup(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
-//    @PostMapping("/signup")
-//    private ApiResponse<UserResponseDTO.JoinDTO> signup(@Valid @RequestBody UserRequestDTO.JoinDTO request){
-//        return ApiResponse.onSuccess(UserConverter.toJoinDTO(userService.signup(request)));
-//    }
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user, @RequestBody UserLoginDTO request, HttpServletRequest http) {
@@ -106,12 +102,5 @@ public class UserController {
         return  ApiResponse.onSuccess(UserConverter.toFindUser(userService.findByUserId(userId)));
     }
 
-    @GetMapping("/id/{userId}")
-    public String getUserById(@PathVariable String userId) {
-
-        User user = userService.findByUserId(userId);
-        return user.getUsername();
-
-    }
 
 }

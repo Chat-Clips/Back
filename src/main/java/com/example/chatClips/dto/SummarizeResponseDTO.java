@@ -1,29 +1,24 @@
 package com.example.chatClips.dto;
 
-import com.example.chatClips.domain.User;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class UserResponseDTO {
-
+public class SummarizeResponseDTO {
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class JoinDTO{
-        private Long id;
-        private LocalDateTime createdAt;
+    public static class GetSummary {
+        private String summarize;
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class FindUserDTO{
-        private String username;
-        private String userId;
+    public static class Save {
+        private Long id;
     }
 }

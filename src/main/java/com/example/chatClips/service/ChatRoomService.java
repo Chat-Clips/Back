@@ -43,6 +43,7 @@ public class ChatRoomService {
         return chatRoomRepository.save(chatRoom).getRoomId();
     }
 
+
     public void enterUser(ChatDTO chat, SimpMessageHeaderAccessor headerAccessor){
         String userId = addUser(chat.getRoomId(), chat.getSender());
 
@@ -78,11 +79,8 @@ public class ChatRoomService {
         //chatRoomService.decreaseUser(roomId);
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
         String userName = getUserName(roomId, userId);
-        terminateRoom(roomId);
         deleteUser(roomId,userId);
-        if(!headerAccessor.getSessionAttributes().isEmpty()){
-            headerAccessor.getSessionAttributes().remove(userId, roomId);
-        }
+
         if(userName != null){
             log.info("User Disconnected : " + userName);
 
@@ -142,6 +140,8 @@ public class ChatRoomService {
     }
     public String exitChatting(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
+        chatRoom.setIsTerminated(true);
+        chatRoomRepository.save(chatRoom);
         List<CommandDTO> chatList = chatRoomRepository.getAllChat(chatRoom);
         String input = new String();
         for(int i = 0; i < chatList.size(); i++) {
@@ -154,6 +154,9 @@ public class ChatRoomService {
         List<String> list = new ArrayList<>();
         ChatRoom chatRoom = chatRoomRepository.findByRoomId(roomId);
         return userChatRoomRepository.findByChatRoom(chatRoom);
+    }
+    public boolean isTerminate(String roomId){
+        return chatRoomRepository.findByRoomId(roomId).getIsTerminated();
     }
 //
 //    public String isDuplicateName(String roomId, String username){

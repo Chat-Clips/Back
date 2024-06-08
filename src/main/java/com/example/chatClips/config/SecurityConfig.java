@@ -51,7 +51,7 @@ public class SecurityConfig {
             .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()
             .requestMatchers("/", "/login", "/loginProc", "/loginForm", "/joinForm", "/user/signup", "/user/login").permitAll() //모든 사용자에게 허용
             .requestMatchers("/admin").hasRole("ADMIN") //"ADMIN" 권한을 가진 사람만 허용
-            .requestMatchers("/user/**", "/feedback/**", "/chatroom/**", "/api/**","/ws/**").permitAll()
+            .requestMatchers("/user/**", "/feedback/**", "/summarize/**", "/chatroom/**", "/api/**","/ws/**").permitAll()
             //.requestMatchers("/user/**", "/feedback/**", "/chatroom/**", "/api/**").hasAnyRole("USER") //"ADMIN"과 "USER"만 허용
             .anyRequest().authenticated()
         );

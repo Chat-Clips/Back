@@ -93,7 +93,7 @@ public class EmbeddingService {
             recommendedSites.add(recommendedSite);
         }
         if (recommendedSite == null) {
-            recommendedSites.add("추천할만한 사이트가 없습니다");
+            recommendedSites.add("-");
         }
 
         return recommendedSites;

@@ -57,24 +57,4 @@ public class ChatController {
     }
 
 
-//    // 채팅에 참여한 유저 리스트 반환
-//    @GetMapping("/userlist")
-//    @ResponseBody
-//    public List<String> userList(String roomId){
-//
-//        return chatRoomService.getUserList(roomId);
-//    }
-//
-//    // 채팅에 참여한 유저 닉네임 중복 확인
-//    @GetMapping("/duplicateName")
-//    @ResponseBody
-//    public String isDuplicateName(@RequestParam("roomId")String roomId ,
-//        @RequestParam("username")String username){
-//
-//        String userName = chatRoomService.isDuplicateName(roomId, username);
-//        log.info("DuplicateName : {}", userName);
-//
-//        return userName;
-//    }
-
 }

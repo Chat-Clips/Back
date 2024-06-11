@@ -66,4 +66,9 @@ public class ChatRoomController {
     public String exitChatting(@RequestParam String roomId){
         return chatRoomService.exitChatting(roomId);
     }
+
+    @GetMapping("/is_terminate")
+    public boolean isTerminate(@RequestParam String roomId){
+        return chatRoomService.isTerminate(roomId);
+    }
 }

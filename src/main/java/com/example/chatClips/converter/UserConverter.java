@@ -13,7 +13,8 @@ public class UserConverter {
     }
     public static UserResponseDTO.FindUserDTO toFindUser(User user){
         return UserResponseDTO.FindUserDTO.builder()
-            .user(user)
+            .userId(user.getUserId())
+            .username(user.getUsername())
             .build();
     }
 }

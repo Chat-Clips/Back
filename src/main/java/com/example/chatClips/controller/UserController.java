@@ -50,7 +50,7 @@ public class UserController {
         HttpSession session = http.getSession();
         session.setAttribute("UserId", loginMember.getUserId());
         sessionList.put(session.getId(), session);
-        session.setMaxInactiveInterval(18000); //5시간
+        session.setMaxInactiveInterval(1800);
         return "로그인 성공";
     }
 

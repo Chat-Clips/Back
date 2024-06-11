@@ -69,7 +69,10 @@ public class ChatGPTController {
             return resultFlagged || hateScore > 0.002 || violenceScore > 0.04 || selfHarmScore > 0.01;
         });
         if (flagged) {
-            return ApiResponse.onFailure("400", "대화 내용에 유해성 발언이 포함되어 있으므로 요약기능 및 사이트 추천기능을 제공하지 않습니다.", null);
+            return ApiResponse.onSuccess(ChatgptApiResponse.SendMessageResultDTO.builder()
+                    .message("대화 내용에 유해성 발언이 포함되어 있으므로 요약기능 및 사이트 추천기능을 제공하지 않습니다.")
+                    .recommemdedSites(null)
+                    .build());
         }
 
         String systemPrompt = "You are an nlp that summarizes the contents of the meeting. If students finish chatting after chatting, you should just summarize based on the contents of the chat. However, the contents of the chat are related to computer science, so you have to think about it when processing. However, the maximum number of printouts can be up to 200 characters. And you have to print them out in Korean. Next recommendations must be made only please when the chat conservation is related to computer, development. At the end, provide two site links that you can refer to related to the chat conversation when chat summary is only related to computer, development. Please recommend official and blog-oriented links as the recommended links.";

@@ -79,7 +79,7 @@ public class SecurityConfig {
         //http.csrf((csrf) -> csrf.ignoringRequestMatchers("/ws/**"));
 
         http.sessionManagement((auth) -> auth
-            .maximumSessions(1)
+            .maximumSessions(2)
             .maxSessionsPreventsLogin(false));
 
         http.sessionManagement((auth) -> auth

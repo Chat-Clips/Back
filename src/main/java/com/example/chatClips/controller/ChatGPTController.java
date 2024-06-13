@@ -150,7 +150,7 @@ https://www.ibm.com/kr-ko
    - Split complex tasks into simpler subtasks
    - Take time to think before concluding.
    - Check if anything was missed in previous attempts.
-               """;
+        """;
         ChatGPTRequest request = new ChatGPTRequest(model, systemPrompt, userPrompt.getMessage());
         ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request, ChatGPTResponse.class);
         String summary = chatGPTResponse.getChoices().get(0).getMessage().getContent();

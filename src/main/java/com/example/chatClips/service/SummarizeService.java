@@ -27,6 +27,7 @@ public class SummarizeService {
     }
     public Summarize summary(String roomId){
         ChatRoom chatRoom = chatRoomRepository.findById(getIdFromRoomId(roomId)).orElseThrow();
+        System.out.println(chatRoom.getRoomId());
         return summarizeRepository.findByChatRoom(chatRoom);
     }
     public Summarize save(SummarizeRequestDTO.Save request){

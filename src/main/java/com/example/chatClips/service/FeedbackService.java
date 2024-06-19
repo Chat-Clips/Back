@@ -23,8 +23,7 @@ public class FeedbackService {
 
     public Feedback post(FeedbackRequest.PostDTO request){
 
-        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new UserHandler(ErrorStatus.MEMBER_NOT_FOUND));
-
+        User user = userRepository.findByUserId(request.getUserId());
         Feedback feedback = Feedback.builder()
             .title(request.getTitle())
             .text(request.getText())
@@ -35,7 +34,8 @@ public class FeedbackService {
     }
 
     public Feedback update(FeedbackRequest.UpdateDTO request){
-        Feedback feedback = feedbackRepository.findById(request.getId()).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
+        User user = userRepository.findByUserId(request.getUserId());
+        Feedback feedback = feedbackRepository.findById(user.getId()).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
 
         // 피드백 내용을 업데이트합니다.
         feedback.setTitle(request.getTitle());
@@ -45,8 +45,9 @@ public class FeedbackService {
         return feedbackRepository.save(feedback);
     }
 
-    public Long delete(Long id) {
-        Feedback feedback = feedbackRepository.findById(id).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
+    public Long delete(String userId) {
+        User user = userRepository.findByUserId(userId);
+        Feedback feedback = feedbackRepository.findById(user.getId()).orElseThrow(() -> new FeedbackHandler(ErrorStatus.FEEDBACK_NOT_FOUND));
         feedbackRepository.delete(feedback);
         return feedback.getId();
     }

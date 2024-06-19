@@ -31,9 +31,9 @@ public class FeedbackController {
         return ApiResponse.onSuccess(FeedbackConverter.toUpdateDTO(feedbackService.update(request)));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ApiResponse<DeleteDTO> deleteFeedback(@PathVariable("id") Long id) {
-        return ApiResponse.onSuccess(FeedbackConverter.toDeleteDTO(feedbackService.delete(id)));
+    @DeleteMapping("/delete/{userId}")
+    public ApiResponse<DeleteDTO> deleteFeedback(@PathVariable("userId") String userId) {
+        return ApiResponse.onSuccess(FeedbackConverter.toDeleteDTO(feedbackService.delete(userId)));
     }
 
     @GetMapping("/all")

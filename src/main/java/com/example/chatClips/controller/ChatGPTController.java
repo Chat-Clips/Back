@@ -123,7 +123,7 @@ public class ChatGPTController {
                지현: 스마트폰 앱을 활용한 지진 경보 시스템에 대해 이야기했습니다.
                수민: 지진 대비 앱을 설치한 경험을 공유했습니다.
                하은: 지진 대비에 대한 정보 공유와 서로 준비하는 중요성을 강조했습니다.
-               케이스 1로 분류한 이유: 전반적으로 지진 대비와 관련된 대화였습니다.
+               추천링크를 제공하지 않습니다: 전반적으로 지진 대비와 관련된 대화였습니다.
                
                ////////////////////////////////////////////////////////////////////////////////
                
@@ -136,7 +136,7 @@ public class ChatGPTController {
                수연: 인공지능 윤리와 블록체인의 확장성 문제에 대한 관심을 표현했습니다.
                지후: 인공지능 윤리와 블록체인의 확장성 문제 해결을 위한 방법에 대해 논의했습니다.
                하나: 페어 AI와 블록체인에 대한 연구 및 양자 컴퓨팅의 중요성에 관심을 나타냈습니다.
-               케이스 2로 분류한 이유: 인공지능과 관련된 여러 주제에 대해 토의하였습니다.
+               
                추천 링크:
                https://www.aitimes.com/
                https://www.ibm.com/kr-ko
@@ -169,6 +169,9 @@ public class ChatGPTController {
                    - Give time to think before concluding.
                    - Guide to find solutions independently.
                    - Check if anything was missed in previous attempts.
+               
+               Please don't say the word "case1" or "case2". It just for system promprting not for user.
+              
                """;
         ChatGPTRequest request = new ChatGPTRequest(model, systemPrompt, userPrompt.getMessage());
         ChatGPTResponse chatGPTResponse = template.postForObject(apiURL, request,

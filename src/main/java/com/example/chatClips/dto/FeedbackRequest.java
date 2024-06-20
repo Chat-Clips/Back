@@ -14,7 +14,7 @@ public class FeedbackRequest {
     public static class PostDTO {
         private String title;
         private String text;
-        private Long userId;
+        private String userId;
     }
 
     @Builder
@@ -22,7 +22,7 @@ public class FeedbackRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateDTO {
-        private Long id;
+        private String userId;
         private String title;
         private String text;
 

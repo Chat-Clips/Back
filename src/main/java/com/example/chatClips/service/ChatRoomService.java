@@ -79,18 +79,11 @@ public class ChatRoomService {
         //chatRoomService.decreaseUser(roomId);
         //채팅방 유저 리스트에서 UUID 유저 닉네임 조회 및 리스트에서 유저 삭제
         String userName = getUserName(roomId, userId);
-        deleteUser(roomId,userId);
+        //deleteUser(roomId,userId);
 
         if(userName != null){
             log.info("User Disconnected : " + userName);
 
-            ChatDTO chat = ChatDTO.builder()
-                .type(ChatDTO.MessageType.LEAVE)
-                .sender(userId)
-                .message(userName + "님이 퇴장하였습니다.")
-                .build();
-
-            template.convertAndSend("/sub/chatroom/" + roomId,chat);
         }
     }
     public void terminateRoom(String roomId){
